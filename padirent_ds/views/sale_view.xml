@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- form view-->
+        <record id="view_order_form_inherit_travel_day" model="ir.ui.view">
+            <field name="name">sale.order.form.travel.day.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="customer_phone"/>
+                    <field name="route" />
+                    <field name="purchase_order_id" />
+                </xpath>
+
+                <xpath expr="//field[@name='date_order']" position="after">
+                    <field name="travel_day_start" />
+                    <field name="travel_day_start_display" readonly="1"/>
+                    <field name="travel_day_end" />
+                    <field name="travel_day_end_display" readonly="1"/>
+                    <field name="travel_day_duration" readonly="1"/>
+                </xpath>
+
+                <xpath expr="//field[@name='validity_date']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='payment_term_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+            </field>
+        </record>
+
+
+
+        <!-- Tree View -->
+        <record id="batch1_customer_representative_tree" model="ir.ui.view">
+            <field name="name">batch1.customer.representative.tree.inherited</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="route"/>
+                </xpath>
+
+                <xpath expr="//field[@name='user_id']" position="replace">
+                     <field name="travel_day_duration"/>
+                </xpath>
+
+                <xpath expr="//field[@name='activity_ids']" position="replace">
+                        <field name="travel_day_start"/>
+                </xpath>
+
+                <xpath expr="//field[@name='travel_day_start']" position="after">
+                    <field name="travel_day_end"/>
+                    <field name="user_id"/>
+                </xpath>
+            </field>
+        </record>   
+    </data>
+</odoo>
