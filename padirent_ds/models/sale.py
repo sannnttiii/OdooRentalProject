@@ -13,6 +13,7 @@ class SaleOrder(models.Model):
         'purchase.order',
         string='Purchase Order Vendor',
         tracking=True,
+        domain="[('state','=','purchase')]",
     )
     customer_phone = fields.Char(
         string='Customer Phone', 
@@ -40,18 +41,17 @@ class SaleOrder(models.Model):
         compute='_compute_travel_day_duration',
         store=True
     )
-    @api.depends('order_line')
-    def _compute_purchase_orders(self):
-        for order in self:
-            purchase_orders = self.env['purchase.order'].search([
-                ('order_line.product_id', 'in', order.order_line.mapped('product_id').ids)
-            ])
-            order.purchase_order_ids = purchase_orders
-
-    def action_view_purchase_orders(self):
-        action = self.env.ref('purchase.action_purchase_order').read()[0]
-        action['domain'] = [('id', 'in', self.purchase_order_ids.ids)]
-        return action
+    
+    driver_id = fields.Many2one(
+        'res.partner', 
+        string='Driver',
+        domain="[('is_driver', '=', True)]"
+    )
+    driver_phone = fields.Char(
+        string='Driver Phone',
+        related='driver_id.phone',
+        readonly=True
+    )
 
     @api.depends('travel_day_start')
     def _compute_travel_day_start(self):
@@ -94,3 +94,59 @@ class SaleOrder(models.Model):
             if record.travel_day_start and record.travel_day_end:
                 if record.travel_day_end < record.travel_day_start:
                     raise ValidationError("Travel End must be after Travel Start.")
+    
+    @api.constrains('order_line', 'driver_id')
+    def _check_driver_info(self):
+        for order in self:
+            has_driver_product = False
+            for line in order.order_line:
+                product_name = line.product_id.name.lower()
+                # _logger.info("Driver Product: %s", product_name)
+                if product_name == 'driver':
+                    has_driver_product = True
+                    break
+
+            # _logger.info("Driver Product: %s", has_driver_product)
+
+            if order.driver_id and not has_driver_product:
+                raise ValidationError("You have selected a driver, but haven't added the 'Driver' product to the order line.")
+
+            if has_driver_product and not order.driver_id:
+                raise ValidationError("You have added the 'Driver' product to the order line, but haven't selected a driver.")
+    
+    def action_confirm(self):
+        res = super(SaleOrder, self).action_confirm()
+        for order in self:
+            if order.purchase_order_id and order.purchase_order_id.state == 'purchase':
+                order.purchase_order_id.button_done()  # Ini mengubah status menjadi 'done' (Locked)
+        return res
+    
+    def action_confirm(self):
+        for order in self:
+            # Cek apakah PO terkait sudah `done`
+            if order.purchase_order_id and order.purchase_order_id.state == 'done':
+                raise UserError(
+                    f"Purchase Order {order.purchase_order_id.name} sudah selesai dan tidak bisa dikaitkan dengan Sales Order ini."
+                )
+        # Lanjutkan proses konfirmasi SO jika PO belum `done`
+        return super(SaleOrder, self).action_confirm()
+
+    def action_cancel(self):
+        res = super(SaleOrder, self).action_cancel()
+        for order in self:
+            po = order.purchase_order_id
+            if po:
+                if po.state == 'done':
+                    po.button_unlock() 
+        return res
+
+    @api.model
+    def create(self, vals):
+        order = super().create(vals)
+        order._check_driver_info()
+        return order
+
+    def write(self, vals):
+        res = super().write(vals)
+        self._check_driver_info()
+        return res

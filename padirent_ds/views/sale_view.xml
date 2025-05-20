@@ -12,6 +12,8 @@
                     <field name="customer_phone"/>
                     <field name="route" />
                     <field name="purchase_order_id" />
+                    <field name="driver_id"/>
+                    <field name="driver_phone"/>
                 </xpath>
 
                 <xpath expr="//field[@name='date_order']" position="after">
@@ -28,6 +30,10 @@
 
                 <xpath expr="//field[@name='payment_term_id']" position="attributes">
                     <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <xpath expr="//button[@name='action_draft']" position="attributes">
+                    <attribute name="invisible">[('state','=','cancel')]</attribute>
                 </xpath>
 
             </field>
