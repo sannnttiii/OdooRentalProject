@@ -22,8 +22,8 @@ class SaleOrder(models.Model):
     )
 
     route = fields.Char(string='Route',tracking=True)
-    travel_day_start = fields.Datetime(string='Travel Start',tracking=True)
-    travel_day_end = fields.Datetime(string='Travel End',tracking=True)
+    travel_day_start = fields.Datetime(string='Travel Start',tracking=True, required=True)
+    travel_day_end = fields.Datetime(string='Travel End',tracking=True, required=True)
 
     travel_day_start_display = fields.Char(
         string='Start Day', 
