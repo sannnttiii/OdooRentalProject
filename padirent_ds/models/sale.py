@@ -119,17 +119,12 @@ class SaleOrder(models.Model):
         for order in self:
             if order.purchase_order_id and order.purchase_order_id.state == 'purchase':
                 order.purchase_order_id.button_done()  # Ini mengubah status menjadi 'done' (Locked)
-        return res
-    
-    def action_confirm(self):
-        for order in self:
-            # Cek apakah PO terkait sudah `done`
-            if order.purchase_order_id and order.purchase_order_id.state == 'done':
+            # Cek apakah PO terkait sudah `done`, lanjutkan proses konfirmasi SO jika PO belum `done`
+            elif order.purchase_order_id and order.purchase_order_id.state == 'done':
                 raise UserError(
                     f"Purchase Order {order.purchase_order_id.name} sudah selesai dan tidak bisa dikaitkan dengan Sales Order ini."
                 )
-        # Lanjutkan proses konfirmasi SO jika PO belum `done`
-        return super(SaleOrder, self).action_confirm()
+        return res
 
     def action_cancel(self):
         res = super(SaleOrder, self).action_cancel()
