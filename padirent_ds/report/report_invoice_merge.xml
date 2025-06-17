@@ -45,7 +45,19 @@
                     </tr>
                 </t>
             </xpath>
-
+            <xpath expr="//div[@id='right-elements']" position="after">
+                <div t-attf-class="#{'col-5' if report_type != 'html' else 'col-12 col-md-5'} ms-5 d-inline-block float-end" style="width:100%; margin-top:40px;">
+                    <div style="float:right; text-align:center; padding-right: 20px;">
+                        <span>
+                            Surabaya, <t t-esc="o.invoice_date.strftime('%d %B %Y')" />
+                        </span>
+                        <br/><br/><br/><br/>
+                        <span>Hormat Kami</span>
+                        <br/><br/><br/>
+                        <!-- Optionally, add a placeholder for a signature image here -->
+                    </div>
+                </div>
+            </xpath>
         </template>
 
     </data>
