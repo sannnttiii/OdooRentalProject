@@ -22,7 +22,7 @@ class ProfitAndLoss extends owl.Component {
         this.state = useState({
             data: null,
             filter_data: null,
-            year : [now.getFullYear()],
+            year: [now.getFullYear()],
             comparison: false,
             comparison_type: null,
         });
@@ -37,7 +37,7 @@ class ProfitAndLoss extends owl.Component {
         var action_title = self.props.action.display_name;
         try {
             var self = this;
-            let data = await self.orm.call("dynamic.balance.sheet.report", "view_report", [this.wizard_id,this.state.comparison,this.state.comparison_type]);
+            let data = await self.orm.call("dynamic.balance.sheet.report", "view_report", [this.wizard_id, this.state.comparison, this.state.comparison_type]);
             self.state.data = data[0]
             self.state.datas = data[2]
             self.state.filter_data = data[1]
@@ -56,7 +56,7 @@ class ProfitAndLoss extends owl.Component {
          */
         ev.preventDefault();
         var self = this;
-        let data = await self.orm.call("dynamic.balance.sheet.report", "view_report", [this.wizard_id,this.state.comparison,this.state.comparison_type]);
+        let data = await self.orm.call("dynamic.balance.sheet.report", "view_report", [this.wizard_id, this.state.comparison, this.state.comparison_type]);
         self.state.data = data[0];
         self.state.datas = data[2];
         return self.action.doAction({
@@ -78,7 +78,7 @@ class ProfitAndLoss extends owl.Component {
          * @param {Event} ev - The event object triggered by the action.
          */
         var self = this;
-        let data = await self.orm.call("dynamic.balance.sheet.report", "view_report", [this.wizard_id,this.state.comparison,this.state.comparison_type]);
+        let data = await self.orm.call("dynamic.balance.sheet.report", "view_report", [this.wizard_id, this.state.comparison, this.state.comparison_type]);
         self.state.data = data[0];
         self.state.datas = data[2];
 
@@ -221,38 +221,38 @@ class ProfitAndLoss extends owl.Component {
         if (!ev.target.classList.contains("selected-filter")) {
             // Unfold all elements
             for (var length = 0; length < this.tbody.el.children.length; length++) {
-                  this.tbody.el.children[length].classList.add('show')
+                this.tbody.el.children[length].classList.add('show')
             }
             ev.target.classList.add("selected-filter");
         } else {
             // Collapse all elements
             for (var length = 0; length < this.tbody.el.children.length; length++) {
-                  this.tbody.el.children[length].classList.remove('show')
+                this.tbody.el.children[length].classList.remove('show')
             }
             ev.target.classList.remove("selected-filter");
         }
     }
-    async apply_date(ev){
-    /**
-     * Applies the selected date filter and triggers data loading based on the selected filter value.
-     * @param {Event} ev - The event object triggered by the date selection.
-     * @returns {Promise<void>} - A promise that resolves when the data is loaded.
-     */
+    async apply_date(ev) {
+        /**
+         * Applies the selected date filter and triggers data loading based on the selected filter value.
+         * @param {Event} ev - The event object triggered by the date selection.
+         * @returns {Promise<void>} - A promise that resolves when the data is loaded.
+         */
         self = this
         if (ev.target.name === 'start_date') {
-                this.filter = {
-                    ...this.filter,
-                    date_from: ev.target.value
-                };
+            this.filter = {
+                ...this.filter,
+                date_from: ev.target.value
+            };
         } else if (ev.target.name === 'end_date') {
-                this.filter = {
-                    ...this.filter,
-                    date_to: ev.target.value
-                };
+            this.filter = {
+                ...this.filter,
+                date_to: ev.target.value
+            };
         } else if (ev.target.attributes["data-value"].value == 'month') {
-                this.filter = ev.target.attributes["data-value"].value
+            this.filter = ev.target.attributes["data-value"].value
         } else if (ev.target.attributes["data-value"].value == 'year') {
-                this.filter = ev.target.attributes["data-value"].value
+            this.filter = ev.target.attributes["data-value"].value
         } else if (ev.target.attributes["data-value"].value == 'quarter') {
             this.filter = ev.target.attributes["data-value"].value
         } else if (ev.target.attributes["data-value"].value == 'last-month') {
@@ -266,51 +266,45 @@ class ProfitAndLoss extends owl.Component {
         self.initial_render = false;
         this.load_data(this.initial_render);
     }
-    onPeriodChange(ev){
+    onPeriodChange(ev) {
         this.period_year.el.value = ev.target.value
     }
-    onPeriodYearChange(ev){
+    onPeriodYearChange(ev) {
         this.period.el.value = ev.target.value
     }
-    async applyComparisonPeriod(){
-        this.state.comparison  = this.period.el.value
+    async applyComparisonPeriod() {
+        this.state.comparison = this.period.el.value
         this.state.comparison_type = "month"
-        let monthNamesShort = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ]
+        let monthNamesShort = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
         let res = await this.orm.call("dynamic.balance.sheet.report", "comparison_filter", [this.wizard_id, this.state.comparison]);
-        this.state.year = [monthNamesShort[now.getMonth()]+'  ' + now.getFullYear()]
+        this.state.year = [monthNamesShort[now.getMonth()] + '  ' + now.getFullYear()]
         for (var length = 0; length < res.length; length++) {
-                const dateObject = new Date(res[length]['date_to']);
-                this.state.year.push(monthNamesShort[dateObject.getMonth()]+'  ' + dateObject.getFullYear())
-            }
+            const dateObject = new Date(res[length]['date_to']);
+            this.state.year.push(monthNamesShort[dateObject.getMonth()] + '  ' + dateObject.getFullYear())
+        }
         this.load_data(self.initial_render);
     }
-    sumGrossProfit(op_inc, cor) {
-        /**
-         * Calculates the sum of values in an array of objects by a specified key.
-         *
-         * @param {Array} data - Array of objects containing numeric values.
-         * @param {string} key - The key to access the numeric value in each object.
-         * @returns {number} The sum of the numeric values.
-         */
-         const stringValue = cor;
-         const floatValue = parseFloat(stringValue.replace(/,/g, ''));
-        return parseFloat(op_inc) + floatValue;
+    sumGrossProfit(cogs, income) {
+        const cleanIncome = parseFloat(income.replace(/,/g, ''));
+        const cleanCOGS = parseFloat(cogs.replace(/,/g, ''));
+        return cleanIncome - cleanCOGS;
     }
-    async applyComparisonYear(){
+
+    async applyComparisonYear() {
         this.state.comparison = this.period_year.el.value
         this.state.comparison_type = "year"
         let res = await this.orm.call("dynamic.balance.sheet.report", "comparison_filter_year", [this.wizard_id, this.state.comparison]);
         this.state.year = [now.getFullYear()]
         for (var length = 0; length < res.length; length++) {
-                const dateObject = new Date(res[length]['date_to']);
-                this.state.year.push(dateObject.getFullYear())
-            }
+            const dateObject = new Date(res[length]['date_to']);
+            this.state.year.push(dateObject.getFullYear())
+        }
         this.load_data(self.initial_render);
     }
     apply_comparison() {
-    this.state.comparison = false
-    this.state.comparison_type = null
-     this.state.year = [now.getFullYear()]
+        this.state.comparison = false
+        this.state.comparison_type = null
+        this.state.year = [now.getFullYear()]
     }
 }
 ProfitAndLoss.template = 'dfr_template_new';
