@@ -8,8 +8,19 @@
             <field name="inherit_id" ref="account.view_move_form"/>
             <field name="arch" type="xml">
 
+                <xpath expr="//field[@name='invoice_vendor_bill_id']" position="after">
+                    <field name="route" readonly="1" invisible="1"/>
+                    <field name="driver_id" readonly="1" invisible="1"/>
+                    <field name="driver_phone" readonly="1" invisible="1"/>
+                </xpath>
+
                 <xpath expr="//div[@name='journal_div']" position="after">
                     <field name="package_name"/>
+                    <field name="travel_day_start" readonly="1" invisible="1"/>
+                    <field name="travel_day_start_display" readonly="1" invisible="1"/>
+                    <field name="travel_day_end" readonly="1" invisible="1"/>
+                    <field name="travel_day_end_display" readonly="1" invisible="1"/>
+                    <field name="travel_day_duration" readonly="1" invisible="1"/>
                 </xpath>
  
                 <xpath expr="//field[@name='invoice_line_ids']/list/field[@name='price_total']" position="after">

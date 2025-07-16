@@ -6,6 +6,28 @@ class AccountMove(models.Model):
 
     package_name = fields.Text(string="Package Name")
 
+    travel_day_start = fields.Datetime(string='Travel Start', readonly=True)
+    travel_day_end = fields.Datetime(string='Travel End', readonly=True)
+
+    travel_day_start_display = fields.Char(readonly=True)
+    travel_day_end_display = fields.Char(readonly=True)
+
+    travel_day_duration = fields.Integer(readonly=True)
+
+    route = fields.Char(string='Route', readonly=True)
+    
+    driver_id = fields.Many2one(
+        'res.partner', 
+        string='Driver',
+        domain="[('is_driver', '=', True)]",
+        readonly=True
+    )
+    driver_phone = fields.Char(
+        string='Driver Phone',
+        related='driver_id.phone',
+        readonly=True
+    )
+
     def get_custom_invoice_lines(self):
         for move in self:
             merged_lines = move.invoice_line_ids.filtered(lambda l: l.merge_product)

@@ -35,7 +35,6 @@
                 <xpath expr="//button[@name='action_draft']" position="attributes">
                     <attribute name="invisible">[('state','=','cancel')]</attribute>
                 </xpath>
-
             </field>
         </record>
 

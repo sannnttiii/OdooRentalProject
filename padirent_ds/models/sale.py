@@ -66,6 +66,10 @@ class SaleOrder(models.Model):
             else:
                 record.travel_day_start_display = ''
 
+            for invoice in record.invoice_ids:
+                invoice.travel_day_start_display = record.travel_day_start_display
+                invoice.travel_day_start = record.travel_day_start
+
     @api.depends('travel_day_end')
     def _compute_travel_day_end(self):
         for record in self:
@@ -79,14 +83,23 @@ class SaleOrder(models.Model):
             else:
                 record.travel_day_end_display = ''
 
+            for invoice in record.invoice_ids:
+                invoice.travel_day_end_display = record.travel_day_end_display
+                invoice.travel_day_end = record.travel_day_end
+
     @api.depends('travel_day_start', 'travel_day_end')
     def _compute_travel_day_duration(self):
         for record in self:
             if record.travel_day_start and record.travel_day_end:
                 duration = (record.travel_day_end.date() - record.travel_day_start.date()).days
                 record.travel_day_duration = max(duration, 0)
+                duration = max(duration, 0)
             else:
                 record.travel_day_duration = 0
+                duration = 0
+
+            for invoice in record.invoice_ids:
+                invoice.travel_day_duration = duration
 
     @api.constrains('travel_day_start', 'travel_day_end')
     def _check_travel_day_dates(self):
@@ -113,6 +126,11 @@ class SaleOrder(models.Model):
 
             if has_driver_product and not order.driver_id:
                 raise ValidationError("You have added the 'Driver' product to the order line, but haven't selected a driver.")
+            
+            for invoice in order.invoice_ids:
+                invoice.driver_id = order.driver_id
+                invoice.driver_phone = order.driver_phone
+                invoice.route = order.route
     
     def action_confirm(self):
         res = super(SaleOrder, self).action_confirm()
@@ -145,3 +163,22 @@ class SaleOrder(models.Model):
         res = super().write(vals)
         self._check_driver_info()
         return res
+
+
+
+class SaleAdvancePaymentInv(models.TransientModel):
+    _inherit = 'sale.advance.payment.inv'
+
+    def _create_invoices(self, sale_orders):
+        res = super()._create_invoices(sale_orders)
+
+        res.write({
+            'travel_day_start': sale_orders.travel_day_start,
+            'travel_day_end': sale_orders.travel_day_end,
+            'travel_day_start_display': sale_orders.travel_day_start_display,
+            'travel_day_end_display': sale_orders.travel_day_end_display,
+            'travel_day_duration': sale_orders.travel_day_duration,
+            'route': sale_orders.route,
+            'driver_id': sale_orders.driver_id.id if sale_orders.driver_id else False,
+            'driver_phone': sale_orders.driver_phone
+        })

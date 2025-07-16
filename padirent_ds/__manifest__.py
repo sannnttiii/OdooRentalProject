@@ -12,7 +12,7 @@
         'views/res_partner_view.xml',
         'views/account_move_view.xml',
         'views/menus.xml',
-        'report/report_invoice_merge.xml',
+        'report/report_invoice_custom.xml',
     ],
     
     'installable': True
