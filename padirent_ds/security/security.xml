@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data noupdate="1">
+
+	    <record id="ds_group_superadmin_sales" model="res.groups">
+		    <field name="name">Superadmin Sales</field>
+	    </record>
+
+	    <record id="ds_group_superadmin_accounting" model="res.groups">
+		    <field name="name">Superadmin Accounting</field>
+	    </record>
+	</data>
+</odoo>

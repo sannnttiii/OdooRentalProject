@@ -1,0 +1,122 @@
+<odoo>
+    <data>
+        <!-- Inherit the original menuitem -->
+        <record id="sale.report_sales_team" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6, 0, [ref('padirent_ds.ds_group_superadmin_sales')])]"/>
+        </record>
+
+        <record id="sale.menu_sale_order_upselling" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6, 0, [ref('padirent_ds.ds_group_superadmin_sales')])]"/>
+        </record>
+
+        <record id="sale.menu_reporting_salespeople" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6, 0, [ref('padirent_ds.ds_group_superadmin_sales')])]"/>
+        </record>
+
+        <record id="sale.sales_team_config" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6, 0, [ref('padirent_ds.ds_group_superadmin_sales')])]"/>
+        </record>
+
+        <record id="sale.menu_sales_config" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6, 0, [ref('padirent_ds.ds_group_superadmin_sales')])]"/>
+        </record>
+
+        <record id="sale.payment_menu" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6, 0, [ref('padirent_ds.ds_group_superadmin_sales')])]"/>
+        </record>
+
+        <record id="sale.sale_menu_config_activities" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6, 0, [ref('padirent_ds.ds_group_superadmin_sales')])]"/>
+        </record>
+
+        <record id="account.menu_action_analytic_lines_tree" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6, 0, [ref('padirent_ds.ds_group_superadmin_accounting')])]"/>
+        </record>
+
+        <record id="base_accounting_kit.management_menu" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6, 0, [ref('padirent_ds.ds_group_superadmin_accounting')])]"/>
+        </record>
+
+        <record id="base_accounting_kit.actions_menu" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6, 0, [ref('padirent_ds.ds_group_superadmin_accounting')])]"/>
+        </record>
+
+        <record id="base_accounting_kit.menu_lock_dates" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6, 0, [ref('padirent_ds.ds_group_superadmin_accounting')])]"/>
+        </record>
+
+        <record id="base_accounting_kit.customer_statements_menu" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6, 0, [ref('padirent_ds.ds_group_superadmin_accounting')])]"/>
+        </record>
+
+        <record id="base_account_budget.menu_act_budget_view" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6, 0, [ref('padirent_ds.ds_group_superadmin_accounting')])]"/>
+        </record>
+
+        <record id="base_accounting_kit.account_reports_generic_statements" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6, 0, [ref('padirent_ds.ds_group_superadmin_accounting')])]"/>
+        </record>
+
+        <record id="base_accounting_kit.account_reports_daily_reports" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6, 0, [ref('padirent_ds.ds_group_superadmin_accounting')])]"/>
+        </record>
+
+        <record id="base_accounting_kit.account_reports_partner" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6, 0, [ref('padirent_ds.ds_group_superadmin_accounting')])]"/>
+        </record>
+
+        <record id="base_accounting_kit.account_reports_audit" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6, 0, [ref('padirent_ds.ds_group_superadmin_accounting')])]"/>
+        </record>
+
+        <record id="base_accounting_kit.menu_aged_trial_balance" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6, 0, [ref('padirent_ds.ds_group_superadmin_accounting')])]"/>
+        </record>
+
+        <record id="dynamic_accounts_report.menu_cash_book" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6, 0, [ref('padirent_ds.ds_group_superadmin_accounting')])]" />
+        </record>
+
+        <record id="dynamic_accounts_report.aged_receivable_menu" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6, 0, [ref('padirent_ds.ds_group_superadmin_accounting')])]" />
+        </record>
+
+        <record id="dynamic_accounts_report.menu_trial_balance" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6, 0, [ref('padirent_ds.ds_group_superadmin_accounting')])]" />
+        </record>
+        
+        <record id="dynamic_accounts_report.menu_partner_ledger" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6, 0, [ref('padirent_ds.ds_group_superadmin_accounting')])]" />
+        </record>
+
+        <record id="dynamic_accounts_report.menu_bank_book" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6, 0, [ref('padirent_ds.ds_group_superadmin_accounting')])]" />
+        </record>
+
+        <record id="dynamic_accounts_report.menu_balance_sheet_report" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6, 0, [ref('padirent_ds.ds_group_superadmin_accounting')])]" />
+        </record>
+
+        <record id="dynamic_accounts_report.aged_payable_menu" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6, 0, [ref('padirent_ds.ds_group_superadmin_accounting')])]" />
+        </record>
+
+        <record id="dynamic_accounts_report.tax_report_menu" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6, 0, [ref('padirent_ds.ds_group_superadmin_accounting')])]" />
+        </record>
+
+        <record id="account.root_payment_menu" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6, 0, [ref('padirent_ds.ds_group_superadmin_accounting')])]" />
+        </record>
+
+        <record id="account.account_management_menu" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6, 0, [ref('padirent_ds.ds_group_superadmin_accounting')])]" />
+        </record>
+
+        <record id="account.menu_analytic_accounting" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6, 0, [ref('padirent_ds.ds_group_superadmin_accounting')])]" />
+        </record>
+
+
+    </data>
+</odoo>
