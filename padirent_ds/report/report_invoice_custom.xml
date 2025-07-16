@@ -22,11 +22,11 @@
                     </div>
                     <div class="col-6">
                         <t t-if="o.travel_day_start_display">
-                            <span t-esc="'Travel Day Start: ' + o.travel_day_start_display + ', ' + o.travel_day_start.strftime('%d-%m-%Y %H:%M:%S')" />
+                            <span t-esc="'Travel Date Start: ' + o.travel_day_start_display + ', ' + o.travel_day_start.strftime('%d-%m-%Y %H:%M:%S')" />
                             <br></br>
                         </t>
                         <t t-if="o.travel_day_end_display">
-                            <span t-esc="'Travel End Start: ' + o.travel_day_end_display + ', ' + o.travel_day_end.strftime('%d-%m-%Y %H:%M:%S')" />
+                            <span t-esc="'Travel Date End: ' + o.travel_day_end_display + ', ' + o.travel_day_end.strftime('%d-%m-%Y %H:%M:%S')" />
                             <br></br>
                         </t>
                         <t t-if="o.travel_day_duration">
