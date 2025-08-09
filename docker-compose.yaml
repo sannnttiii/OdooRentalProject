@@ -1,0 +1,36 @@
+services:
+  odoo18-web:
+    image: odoo:18.0
+    depends_on:
+      - db
+    ports:
+      - "8018:8069"
+      - "8118:8072"
+    environment:
+      - HOST=db
+      - USER=odoo18
+      - PASSWORD=myodoo18
+    volumes:
+      - ./filestore/odoo18/:/var/lib/odoo/.local/share/Odoo
+      - ./config/odoo18/:/etc/odoo/
+      - ./custom/odoo18/:/mnt/extra-addons
+      - ./log/odoo18/:/var/log/odoo/
+  db:
+    image: postgres:15
+    ports:
+      - "6432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=supersecret
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - ./init:/docker-entrypoint-initdb.d # Mount the init folder with SQL files
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  filestore:
+  db-data:
+  config:
+  custom:
+  log:
